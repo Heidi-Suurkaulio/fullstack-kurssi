@@ -5,6 +5,8 @@ sequenceDiagram
 participant selain
 participant palvelin
 
+Note right of selain: Käyttäjä painaa lähetä nappia, ja selain lähettää POST-pyynnön
+
 selain->>palvelin: POST https://studies.cs.helsinki.fi/exampleapp/new_note 
 activate palvelin
 palvelin->>selain: HTTP 302 Found
@@ -37,6 +39,9 @@ selain->>palvelin: GET https://studies.cs.helsinki.fi/exampleapp/data.json
 activate palvelin
 palvelin->>selain: HTTP 200 JSON tiedosto
 activate selain
+
+Note right of selain: Sivustolle on vielä linkitetty favicon tiedosto, jota selain pyytää
+
 selain->>palvelin: GET https://studies.cs.helsinki.fi/favicon.ico
 activate palvelin
 palvelin->>selain: HTTP 404 Not Found
