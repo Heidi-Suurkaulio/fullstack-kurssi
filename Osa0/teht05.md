@@ -24,11 +24,11 @@ activate selain
 selain->>palvelin: GET https://studies.cs.helsinki.fi/exampleapp/spa.js 
 activate palvelin
 palvelin->>selain: HTTP 304 Not Modified (JavaScript koodi)
-activate selain
-selain->>palvelin: GET https://studies.cs.helsinki.fi/exampleapp/data.json 
 
 Note right of selain: JavaScript koodi aktivoi selaimen hakemaan JSON tiedoston.
 
+activate selain
+selain->>palvelin: GET https://studies.cs.helsinki.fi/exampleapp/data.json 
 activate palvelin
 palvelin->>selain: HTTP 304 Not Modified (JSON tiedosto) 
 
