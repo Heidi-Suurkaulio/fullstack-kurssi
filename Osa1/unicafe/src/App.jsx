@@ -7,7 +7,16 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
-const Display = ({good, neutral, bad, all, avg, positive}) => {
+const Statistics = ({good, neutral, bad, all, avg, positive}) => {
+  if (all < 1) {
+    return (
+      <div>
+        <p><b>Statistics</b></p>
+        <p>No feedback given</p>
+      </div>
+    )
+  }
+
   return (
     <div>
       <p><b>Statistics</b></p>
@@ -90,7 +99,7 @@ const App = () => {
       <Button handleClick={handleNeutral} text = 'neutral' />
       <Button handleClick={handleBad} text = 'bad' />
       </div>
-      <Display good = {good} neutral = {neutral} bad = {bad} 
+      <Statistics good = {good} neutral = {neutral} bad = {bad} 
       all = {all} avg = {avg} positive = {positive} />
     </div>
   )
