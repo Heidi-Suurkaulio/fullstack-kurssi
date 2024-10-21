@@ -1,54 +1,97 @@
 import { useState } from 'react'
 
+// components
 const Button = ({ handleClick, text }) => (  
   <button onClick={handleClick}>    
     {text}  
   </button>
 )
 
-const Display = ({good, neutral, bad}) => {
+const Display = ({good, neutral, bad, all, avg, positive}) => {
   return (
     <div>
-      <p>Statistics</p>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
+      <p><b>Statistics</b></p>
+      <ul>
+      <li>good: {good}</li>
+      <li>neutral: {neutral}</li>
+      <li>bad: {bad}</li>
+      <li>all: {all}</li>
+      <li>average: {avg}</li>
+      <li>positive: {positive} %</li>
+      </ul>
     </div>
   )
 }
 
+// main component
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+  const [all, setAll] = useState(0)
+  const [avgArr, setArr] = useState([])
+  const [avg, setAvg] = useState(0)
+  const [positive, setPositive] = useState(0)
 
+  // functions
+  /// return the average feedback
+  /// when good = 1, neutral = 0, bad = -1
+  const countAvg = (array) => {
+    return array.reduce((sum, currentValue) => sum + currentValue, 0) / array.length
+  }
+
+  /// return the share of positive feedback
+  /// amount of digit 1 compared to everything else in the array
+  const countPositive = (array) => {
+    const p = array.filter((x) => x === 1)
+    if (p.length < 1) return 0
+    
+    return (p.length / array.length) * 100
+  }
+
+  // Event handlers
   const handleGood = () => {
-    //setGood(good + 1)
-    //console.log(good)
     const updatedGood = good + 1
     setGood(updatedGood)
-    //console.log(good)
+    setAll(updatedGood + neutral + bad)
+    const uArr = avgArr.concat(1)
+    setAvg(countAvg(uArr))
+    setPositive(countPositive(uArr))
+    setArr(uArr)
   }
 
   const handleNeutral = () => {
-    setNeutral(neutral + 1)
-    //console.log(neutral)
+    const uNeutral = neutral + 1
+    setNeutral(uNeutral)
+    setAll(good + uNeutral + bad)
+    const uArr = avgArr.concat(0)
+    setAvg(countAvg(uArr))
+    setPositive(countPositive(uArr))
+    setArr(uArr)
   }
 
   const handleBad = () => {
-    setBad(bad + 1)
+    const uBad = bad + 1
+    setBad(uBad)
+    setAll(good + neutral + uBad)
+    const uArr = avgArr.concat(-1)
+    setAvg(countAvg(uArr))
+    setPositive(countPositive(uArr))
+    setArr(uArr)
   }
 
+  // Structure of the site
   return (
     <div>
       <div>
-        <p>give feedback</p>
+        <p><b>give feedback</b></p>
       <Button handleClick={handleGood} text = 'good' />        
       <Button handleClick={handleNeutral} text = 'neutral' />
       <Button handleClick={handleBad} text = 'bad' />
       </div>
-      <Display good = {good} neutral = {neutral} bad = {bad} />
+      <Display good = {good} neutral = {neutral} bad = {bad} 
+      all = {all} avg = {avg} positive = {positive} />
     </div>
   )
 }
