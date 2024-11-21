@@ -25,6 +25,14 @@ const Course = ({ course }) => {
     )
   }
 
+  const Total = ({ parts }) => {
+    const summa = parts.reduce((ac, p) =>
+      ac + p.exercises, 0,)
+    return (
+      <p>Number of exercises {summa} </p>
+    )
+  }
+
   return (
     <>
       <Header course={course['name']} />
@@ -34,13 +42,7 @@ const Course = ({ course }) => {
   )
 }
 
-//TODO rikki!
-const Total = (props) => {
-  return (
-    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises +
-      props.parts[2].exercises}</p>
-  )
-}
+
 
 const App = () => {
   const course = {
