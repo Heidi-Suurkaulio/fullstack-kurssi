@@ -11,13 +11,7 @@ const App = () => {
   }
 
   function isDublicate(nName) {
-    const found = persons.find(pe => 
-      pe.name === nName
-    )
-    if (typeof(found) === 'undefined') {
-      return false
-    }
-    return true
+    return persons.some(pe => pe.name === nName)
   }
 
   const addName = (event) => {
@@ -54,7 +48,6 @@ const App = () => {
       </ul>
     </div>
   )
-
 }
 
 export default App
