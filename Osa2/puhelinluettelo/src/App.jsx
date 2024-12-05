@@ -9,15 +9,30 @@ const App = () => {
   const handleListChange = (event) => {
     setNewName(event.target.value)
   }
-  
+
+  function isDublicate(nName) {
+    const found = persons.find(pe => 
+      pe.name === nName
+    )
+    if (typeof(found) === 'undefined') {
+      return false
+    }
+    return true
+  }
+
   const addName = (event) => {
     event.preventDefault()
-    const newPerson = {name: newName}
-    setPersons(persons.concat(newPerson))
-    setNewName("")
+    if (!isDublicate(newName)) {
+      const newPerson = {name: newName}
+      setPersons(persons.concat(newPerson))
+      setNewName("")
+    }
+    else {
+      alert(`${newName} is already added to phonebook`)
+      setNewName("")
+    }
   }
   
-  //TODO korjaa vaarallinen indeksi
   return (
     <div>
       <h2>Phonebook</h2>
@@ -32,8 +47,8 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       <ul>
-        {persons.map((p, i) =>
-          <li key={i}> {p.name} </li>
+        {persons.map(p =>
+          <li key={p.name}> {p.name} </li>
         )
         }
       </ul>
