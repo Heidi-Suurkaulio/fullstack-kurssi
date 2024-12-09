@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import AddForm from './components/AddForm'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -22,16 +25,17 @@ const App = () => {
 
   /**
    * Searches for dublicates of the new name in the persons list
+   * @param {list} persons list where the dublicates are checked
    * @param {string} nName new name candidate
    * @returns boolean weither or not the given name already exist in the list
    */
-  function isDublicate(nName) {
+  function isDublicate(persons, nName) {
     return persons.some(pe => pe.name === nName)
   }
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (!isDublicate(newName)) {
+    if (!isDublicate(persons, newName)) {
       const newPerson = { name: newName, number: newNumber }
       setPersons(persons.concat(newPerson))
       setNewName("")
@@ -65,31 +69,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form>
-        <div>
-          Filter: <input value={filterSt}
-          onChange={handleFilter}/> 
-        </div>
-      </form>
+      <Filter str={filterSt} handleFunction={handleFilter} />
       <h2>Add a new </h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName}
-            onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber}
-            onChange={handleNumberChange} /></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <AddForm submitfn={addPerson} name={newName} handleNameChange={handleNameChange}
+        number={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <ul>
-        {filteredList.map(p =>
-          <li key={p.name}> {p.name} {p.number} </li>
-        )}
-      </ul>
+      <Persons list={filteredList} />
     </div>
   )
 }
