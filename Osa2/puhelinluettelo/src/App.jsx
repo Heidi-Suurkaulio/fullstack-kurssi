@@ -20,7 +20,12 @@ const App = () => {
       .get('http://localhost:3001/persons')
       .then(response => setPersons(response.data))
   }
-  
+
+  /**
+ * call for function which gets the data
+ */
+  useEffect(hook, [])
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -43,10 +48,15 @@ const App = () => {
     event.preventDefault()
     if (!isDublicate(persons, newName)) {
       const newPerson = { name: newName, number: newNumber }
-      setPersons(persons.concat(newPerson))
-      setNewName("")
-      setNewNumber("")
+      axios
+      .post('http://localhost:3001/persons', newPerson)
+      .then(response => {
+        setPersons(persons.concat(response.data))      
+        setNewName('')
+        setNewNumber('')   
+      })
     }
+
     else {
       alert(`${newName} is already added to phonebook`)
       setNewName("")
@@ -71,11 +81,6 @@ const App = () => {
     setNewFilterSt(event.target.value)
     setNewFilter(true)
   }
-
-  /**
-   * call for function which gets the data
-   */
-  useEffect(hook, [])
 
   return (
     <div>
