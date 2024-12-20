@@ -1,11 +1,17 @@
-const Person = ({ name, number }) => {
-    return <li> {name} {number} </li>
+const Person = ({ name, number, removeFn }) => {
+    // ugly layout, fix later
+    return <li> 
+        {name} {number} 
+        <button onClick={ removeFn }> delete </button>
+    </li>
 }
 
-const Persons = ({ list }) => {
+
+const Persons = ({ list, removeFn }) => {
     return <ul>
         {list.map(p =>
-            <Person key={p.name} name={p.name} number={p.number} />
+            <Person key={p.id} name={p.name} number={p.number} 
+            removeFn={() => removeFn(p.name, p.id)} />
         )}
     </ul>
 }

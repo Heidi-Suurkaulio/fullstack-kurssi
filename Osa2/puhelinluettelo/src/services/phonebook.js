@@ -12,5 +12,11 @@ const getAll = () => {
     return request.then(response => response.data)
   }
 
-  export default { getAll, create }
+  // name or id as an identifier?
+  const remove = id => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then()
+  }
+
+  export default { getAll, create, remove }
   

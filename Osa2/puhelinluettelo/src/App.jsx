@@ -63,6 +63,16 @@ const App = () => {
     }
   }
 
+  const removePerson = (name, id) => {
+    if (confirm(`Do you want to remove ${name}`)) {
+      const i = persons.findIndex((p) => p.id === id)
+      phonebookService.remove(id)
+      .then(
+        setPersons(persons.toSpliced(i, 1))
+      )
+    }
+  }
+
   /**
    * Filters persons names with string
    * @param {list} persons original list of persons
@@ -90,7 +100,7 @@ const App = () => {
       <AddForm submitfn={addPerson} name={newName} handleNameChange={handleNameChange}
         number={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons list={filteredList} />
+      <Persons list={filteredList} removeFn={removePerson}/>
     </div>
   )
 }
