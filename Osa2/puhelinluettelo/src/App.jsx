@@ -47,7 +47,23 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (!isDublicate(persons, newName)) {
+    if (isDublicate(persons, newName)) {
+      if (confirm(`${newName} is already added to phonebook, 
+      replace the old number with a new one`)) {
+        const toChange = persons.find(p => p.name === newName)
+        const changedP = {...toChange, number: newNumber}
+
+        phonebookService
+        .update(toChange.id, changedP)
+        .then(response => {
+          const iid = response.id
+          setPersons(persons.map(pe => pe.id !== iid ? pe : response))
+        })
+      }
+      setNewName("")
+      setNewNumber("")
+    }
+    else {
       const newPerson = { name: newName, number: newNumber }
       phonebookService.create(newPerson)
       .then(returnedPerson => {        
@@ -55,11 +71,6 @@ const App = () => {
         setNewName('')
         setNewNumber('')   
       })
-    }
-
-    else {
-      alert(`${newName} is already added to phonebook`)
-      setNewName("")
     }
   }
 
