@@ -28,12 +28,22 @@
     {
       "id": "850c",
       "name": "Joulu Muori",
-      "number": "057-5789-7907"
+      "number": "057-5789-7906"
     },
     {
       "id": "2d0e",
       "name": "Nuutti Pukki",
       "number": "086-7657-869"
+    },
+    {
+      "id": "790c",
+      "name": "Joulu Pukki",
+      "number": "065-7856-80"
+    },
+    {
+      "id": "33a5",
+      "name": "Joulu Tonttu",
+      "number": "078-9799-0807"
     }
   ]
 }

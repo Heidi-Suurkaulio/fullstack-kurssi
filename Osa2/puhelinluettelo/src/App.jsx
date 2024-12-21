@@ -20,9 +20,9 @@ const App = () => {
    */
   const hook = () => {
     phonebookService.getAll()
-    .then(initialPersons => {        
-      setPersons(initialPersons)      
-    })
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
   }
 
   /**
@@ -48,64 +48,72 @@ const App = () => {
     return persons.some(pe => pe.name === nName)
   }
 
+  /**
+   * Function for managing the notification
+   * @param {string} msg message wanted to display
+   * @param {boolean} state state for error True if error, False if notification
+   */
+  function doNotification(msg, state) {
+    setError(state)
+    setNotificationMsg(msg)
+    setTimeout(() =>
+      setNotificationMsg(null), 500)
+  }
+
+  /**
+   * Function for resetting name and number to the form
+   */
+  function setNameNumber() {
+    setNewName("")
+    setNewNumber("")
+  }
+
   const addPerson = (event) => {
     event.preventDefault()
-    if (isDublicate(persons, newName)) {
-      if (confirm(`${newName} is already added to phonebook, 
+    // not dublicate 
+    if (!isDublicate(persons, newName)) {
+      const newPerson = { name: newName, number: newNumber }
+      phonebookService.create(newPerson)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNameNumber()
+          doNotification(`Added ${newName}`, false)
+        })
+      return
+    }
+    
+    // assumed is dublicate, confirm if number changed
+    if (confirm(`${newName} is already added to phonebook, 
       replace the old number with a new one`)) {
-        const toChange = persons.find(p => p.name === newName)
-        const changedP = {...toChange, number: newNumber}
+      const toChange = persons.find(p => p.name === newName)
+      const changedP = { ...toChange, number: newNumber }
 
-        phonebookService
+      phonebookService
         .update(toChange.id, changedP)
         .then(response => {
           const iid = response.id
           setPersons(persons.map(pe => pe.id !== iid ? pe : response))
-          setNewName("")
-          setNewNumber("")
-          setError(false)
-          setNotificationMsg(`Changed ${newName}'s number`)
-          setTimeout(() => 
-          setNotificationMsg(null), 500)
+          setNameNumber()
+          doNotification(`Changed ${newName}'s number`, false)
         })
         .catch(error => {
-          setError(true)
-          setNotificationMsg(`The preson ${newName} was already removed!`)
-          setTimeout(() => 
-            setNotificationMsg(null), 500)
+          doNotification(`The preson ${newName} was already removed!`, true)
           setPersons(persons.filter(pe => pe.name !== newName))
-          setNewName("")
-          setNewNumber("")
+          setNameNumber()
         })
+        return
       }
-
-    }
-    else {
-      const newPerson = { name: newName, number: newNumber }
-      phonebookService.create(newPerson)
-      .then(returnedPerson => {        
-        setPersons(persons.concat(returnedPerson))      
-        setNewName('')
-        setNewNumber('')   
-      })
-      setError(false)
-      setNotificationMsg(`Added ${newName}`)
-      setTimeout(() => 
-      setNotificationMsg(null), 500)
-    }
+      setNameNumber()
   }
 
   const removePerson = (name, id) => {
     if (confirm(`Do you want to remove ${name}`)) {
       const i = persons.findIndex((p) => p.id === id)
       phonebookService.remove(id)
-      .then(
-        setPersons(persons.toSpliced(i, 1))
-      )
-      setError(false)
-      setNotificationMsg(`Removed ${name}`)
-      setTimeout(() => 
-      setNotificationMsg(null), 500)
+        .then(() => {
+          setPersons(persons.toSpliced(i, 1))
+          doNotification(`Removed ${name}`, false)
+        })
     }
   }
 
@@ -137,7 +145,7 @@ const App = () => {
       <AddForm submitfn={addPerson} name={newName} handleNameChange={handleNameChange}
         number={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons list={filteredList} removeFn={removePerson}/>
+      <Persons list={filteredList} removeFn={removePerson} />
     </div>
   )
 }
