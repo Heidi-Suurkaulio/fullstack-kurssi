@@ -11,7 +11,8 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filtered, setNewFilter] = useState(false)
   const [filterSt, setNewFilterSt] = useState('')
-  const [notificationMsg, setNotificationMsg] = useState('')
+  const [notificationMsg, setNotificationMsg] = useState(null)
+  const [error, setError] = useState(false)
 
   /**
    * get the data from db.json
@@ -60,13 +61,24 @@ const App = () => {
         .then(response => {
           const iid = response.id
           setPersons(persons.map(pe => pe.id !== iid ? pe : response))
+          setNewName("")
+          setNewNumber("")
+          setError(false)
+          setNotificationMsg(`Changed ${newName}'s number`)
+          setTimeout(() => 
+          setNotificationMsg(null), 500)
+        })
+        .catch(error => {
+          setError(true)
+          setNotificationMsg(`The preson ${newName} was already removed!`)
+          setTimeout(() => 
+            setNotificationMsg(null), 500)
+          setPersons(persons.filter(pe => pe.name !== newName))
+          setNewName("")
+          setNewNumber("")
         })
       }
-      setNewName("")
-      setNewNumber("")
-      setNotificationMsg(`Changed ${newName}'s number`)
-      setTimeout(() => 
-      setNotificationMsg(null), 500)
+
     }
     else {
       const newPerson = { name: newName, number: newNumber }
@@ -76,6 +88,7 @@ const App = () => {
         setNewName('')
         setNewNumber('')   
       })
+      setError(false)
       setNotificationMsg(`Added ${newName}`)
       setTimeout(() => 
       setNotificationMsg(null), 500)
@@ -89,6 +102,7 @@ const App = () => {
       .then(
         setPersons(persons.toSpliced(i, 1))
       )
+      setError(false)
       setNotificationMsg(`Removed ${name}`)
       setTimeout(() => 
       setNotificationMsg(null), 500)
@@ -117,7 +131,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMsg} />
+      <Notification message={notificationMsg} error={error} />
       <Filter str={filterSt} handleFunction={handleFilter} />
       <h2>Add a new </h2>
       <AddForm submitfn={addPerson} name={newName} handleNameChange={handleNameChange}

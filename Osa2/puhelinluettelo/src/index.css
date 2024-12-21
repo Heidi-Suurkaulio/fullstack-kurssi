@@ -20,6 +20,13 @@
   font-size: larger;
 }
 
+.error {
+  background-color: rgb(248, 174, 175);
+  padding: 0.5em;
+  border-left: 0.1em solid rgb(52, 36, 36);
+  font-size: larger;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
