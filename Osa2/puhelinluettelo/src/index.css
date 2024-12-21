@@ -13,6 +13,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.notification {
+  background-color: rgb(211, 245, 211);
+  padding: 0.5em;
+  border-left: 0.1em solid rgb(36, 52, 36);
+  font-size: larger;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

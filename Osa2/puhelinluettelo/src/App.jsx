@@ -3,6 +3,7 @@ import phonebookService from './services/phonebook'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import AddForm from './components/AddForm'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filtered, setNewFilter] = useState(false)
   const [filterSt, setNewFilterSt] = useState('')
+  const [notificationMsg, setNotificationMsg] = useState('')
 
   /**
    * get the data from db.json
@@ -62,6 +64,9 @@ const App = () => {
       }
       setNewName("")
       setNewNumber("")
+      setNotificationMsg(`Changed ${newName}'s number`)
+      setTimeout(() => 
+      setNotificationMsg(null), 500)
     }
     else {
       const newPerson = { name: newName, number: newNumber }
@@ -71,6 +76,9 @@ const App = () => {
         setNewName('')
         setNewNumber('')   
       })
+      setNotificationMsg(`Added ${newName}`)
+      setTimeout(() => 
+      setNotificationMsg(null), 500)
     }
   }
 
@@ -81,6 +89,9 @@ const App = () => {
       .then(
         setPersons(persons.toSpliced(i, 1))
       )
+      setNotificationMsg(`Removed ${name}`)
+      setTimeout(() => 
+      setNotificationMsg(null), 500)
     }
   }
 
@@ -106,6 +117,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMsg} />
       <Filter str={filterSt} handleFunction={handleFilter} />
       <h2>Add a new </h2>
       <AddForm submitfn={addPerson} name={newName} handleNameChange={handleNameChange}
