@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/persons'
+// baseUrl changed for 3.11 previous localhost
+const baseUrl = '/api/persons'
 
 // No error handling yet...
 const getAll = () => {
