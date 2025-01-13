@@ -78,7 +78,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNameNumber()
           doNotification(`Added ${newName}`, false)
-        })
+        }).catch(err => {
+          doNotification('Person must contain name and number ' 
+            + err.response.data.error, true)
+    })
       return
     }
     
@@ -97,9 +100,13 @@ const App = () => {
           doNotification(`Changed ${newName}'s number`, false)
         })
         .catch(error => {
-          doNotification(`The preson ${newName} was already removed!`, true)
-          setPersons(persons.filter(pe => pe.name !== newName))
-          setNameNumber()
+          if (error.response) {
+            doNotification('Missing phone number', true)
+          } else {
+            doNotification(`The preson ${newName} was already removed!`, true)
+            setPersons(persons.filter(pe => pe.name !== newName))
+            setNameNumber()
+          }
         })
         return
       }
