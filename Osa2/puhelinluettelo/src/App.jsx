@@ -101,7 +101,8 @@ const App = () => {
         })
         .catch(error => {
           if (error.response) {
-            doNotification('Missing phone number', true)
+            doNotification('Missing or not valid phone number' + 
+              error.response.data.error, true)
           } else {
             doNotification(`The preson ${newName} was already removed!`, true)
             setPersons(persons.filter(pe => pe.name !== newName))
