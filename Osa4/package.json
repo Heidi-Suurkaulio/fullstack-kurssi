@@ -1,0 +1,34 @@
+{
+  "name": "blogilista",
+  "version": "1.0.0",
+  "description": "osan 4 tehtavat",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Heidi-Suurkaulio/fullstack-kurssi.git"
+  },
+  "keywords": [
+    "backend",
+    "fullstack"
+  ],
+  "author": "Heidi Suurkaulio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Heidi-Suurkaulio/fullstack-kurssi/issues"
+  },
+  "homepage": "https://github.com/Heidi-Suurkaulio/fullstack-kurssi#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

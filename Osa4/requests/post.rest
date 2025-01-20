@@ -1,0 +1,9 @@
+POST http://localhost:3001/api/blogs
+content-Type: application/json
+
+{
+    "title": "Onko gradu kesken",
+    "author": "Heidi Suurkaulio",
+    "url": "https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken",
+    "likes": 10
+}
