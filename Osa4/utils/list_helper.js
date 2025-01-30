@@ -36,53 +36,41 @@ const mostBlogs = (blogs) => {
         authors.push(newAuth)
     })
 
-    const mostBlgs = authors.reduce((accumulator, current) => {
+    const maxBlogs = authors.reduce((accumulator, current) => {
         if (accumulator.blogs < current.blogs) return current
         return accumulator
     })
 
-    return mostBlgs
+    return maxBlogs
 }
 
-/* const listWithManyBlogs = [
-    {
-        _id: "5a422aa71b54a676234d17f8",
-        title: "Go To Statement Considered Harmful",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
-        likes: 5,
-        __v: 0
-    },
-    {
-        _id: "5a422b3a1b54a676234d17f9",
-        title: "Canonical string reduction",
-        author: "Edsger W. Dijkstra",
-        url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-        likes: 12,
-        __v: 0
-    },
-    {
-        _id: "5a422b891b54a676234d17fa",
-        title: "First class tests",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll",
-        likes: 10,
-        __v: 0
-    },
-    {
-        _id: "5a422ba71b54a676234d17fb",
-        title: "TDD harms architecture",
-        author: "Robert C. Martin",
-        url: "http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html",
-        likes: 0,
-        __v: 0
-    }
-]
-console.log(mostBlogs(listWithManyBlogs))
- */
+const mostLikes = (blogs) => {
+    if (blogs.length < 1) return {}
+
+    const authors = []
+    blogs.forEach(blog => {
+        const author = (authors.find(({ name }) =>
+            name === blog.author))
+        if (author) {
+            author.likes = author.likes + blog.likes
+            return
+        }
+        const newAuth = { name: blog.author, likes: blog.likes }
+        authors.push(newAuth)
+    })
+    
+    const maxLikes = authors.reduce((accumulator, current) => {
+        if (accumulator.likes < current.likes) return current
+        return accumulator
+    })
+
+    return maxLikes
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
