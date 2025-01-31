@@ -4,9 +4,9 @@
   "description": "osan 4 tehtavat",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "node --test"
+    "start": "cross-env NODE_ENV=production node index.js",
+    "dev": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test node --test"
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,8 @@
     "mongoose": "^8.9.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.9",
+    "supertest": "^7.0.0"
   }
 }
