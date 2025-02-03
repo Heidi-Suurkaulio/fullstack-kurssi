@@ -44,6 +44,13 @@ test('there are right amount of blogs', async () => {
     assert.strictEqual(response.body.length, initBlogs.length)
 })
 
+test('identifier is marked as id', async () => {
+    const response = await api.get('/api/blogs')
+    const everyId = response.body.every(res => res.id)
+    
+    assert.strictEqual(true, everyId)
+})
+
 after(async () => {
     await mongo.connection.close()
 })
