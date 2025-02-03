@@ -4,6 +4,7 @@ const Blog = require('../models/blog')
 const supertest = require('supertest')
 const assert = require('node:assert')
 const app = require('../app')
+const { title } = require('node:process')
 
 const api = supertest(app)
 
@@ -71,7 +72,27 @@ test('a valid blog can be added', async () => {
         author === 'Joni Pääkkö'))
 
     assert.strictEqual(response.body.length, initBlogs.length + 1)
-}) 
+})
+
+test('if likes is not declared the dafault is 0', async () => {
+    const testerBlog = {
+        title: 'Onko gradu kesken?',
+        author: 'Heidi Suurkaulio',
+        url: 'https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken'
+    }
+
+    await 
+    api.post('/api/blogs')
+    .send(testerBlog)
+    .expect(201)
+
+    const response = await api.get('/api/blogs')
+    
+    const blg = response.body.find(({title}) => 
+        title === 'Onko gradu kesken?')
+
+    assert(blg.likes === 0)
+})
 
 after(async () => {
     await mongo.connection.close()
