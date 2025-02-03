@@ -2,8 +2,14 @@ const mongo = require('mongoose')
 const { Transform } = require('supertest/lib/test')
 
 const blogSchema = mongo.Schema({
-    title: String,
-    author: String,
+    title: {
+      type: String,
+      required: true
+    },
+    author: {
+      type: String,
+      required: true
+    },
     url: String,
     likes: Number
   })

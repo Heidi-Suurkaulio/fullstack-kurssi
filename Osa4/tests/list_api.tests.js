@@ -7,7 +7,7 @@ const app = require('../app')
 
 const api = supertest(app)
 
-// Note: Using the original database!
+// Now using local database
 const initBlogs = [
     {
         "title": "Hirmuisten liskojen menneisyys",
@@ -48,8 +48,30 @@ test('identifier is marked as id', async () => {
     const response = await api.get('/api/blogs')
     const everyId = response.body.every(res => res.id)
     
-    assert.strictEqual(true, everyId)
+    assert(everyId)
 })
+
+test('a valid blog can be added', async () => {
+    const testBlog = {
+        title: 'Luottamusväli ≠ luottamusväli',
+        author: 'Joni Pääkkö',
+        url: 'https://joanpaak.github.io/blathers/LuottamusvaliEiLuottamusvali/luottamusvaliEiLuottamusvali.html',
+        likes: 6
+    }
+
+    await 
+    api.post('/api/blogs')
+    .send(testBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+    const response = await api.get('/api/blogs')
+
+    assert(response.body.find(({author}) => 
+        author === 'Joni Pääkkö'))
+
+    assert.strictEqual(response.body.length, initBlogs.length + 1)
+}) 
 
 after(async () => {
     await mongo.connection.close()
