@@ -94,6 +94,32 @@ test('if likes is not declared the dafault is 0', async () => {
     assert(blg.likes === 0)
 })
 
+test('if request has no title return status 400', async () => {
+    const tester = {
+        author: 'Heidi Suurkaulio',
+        url: 'https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken',
+        likes: 6
+    }
+
+    await 
+    api.post('/api/blogs')
+    .send(tester)
+    .expect(400)
+})
+
+test('if request has no url return status 400', async () => {
+    const test = {
+        title: 'Onko gradu kesken?',
+        author: 'Heidi Suurkaulio',
+        likes: 6
+    }
+
+    await 
+    api.post('/api/blogs')
+    .send(test)
+    .expect(400) 
+})
+
 after(async () => {
     await mongo.connection.close()
 })

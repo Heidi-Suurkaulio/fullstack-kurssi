@@ -5,5 +5,5 @@ content-Type: application/json
     "title": "Rahoiksi gradulla?",
     "author": "Santeri Aikio",
     "url": "https://www.jyu.fi/fi/blogikirjoitus/rahoiksi-gradulla",
-    "likes": 7
+    "likes": 6
 }

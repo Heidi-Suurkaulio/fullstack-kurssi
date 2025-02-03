@@ -1,4 +1,5 @@
 const blogRouter = require('express').Router()
+const logger = require('../utils/logger')
 const Blog = require('../models/blog')
 
 blogRouter.get('/', async (request, response) => {
@@ -7,7 +8,8 @@ blogRouter.get('/', async (request, response) => {
         response.json(blogs)
     }
     catch { exception =>
-        console.log(exception) // bad fix
+        logger.info(exception.message) // temporary fix? bad one?
+        response.status(404).end()
     }
 })
 
@@ -25,7 +27,8 @@ blogRouter.post('/', async (request, response) => {
         response.status(201).json(saved)
     }
     catch {exception => 
-        console.log(exception)
+        logger.info(exception.message)
+        response.status(400).end()
     }
 })
 

@@ -1,16 +1,15 @@
 const mongo = require('mongoose')
-const { Transform } = require('supertest/lib/test')
 
 const blogSchema = mongo.Schema({
     title: {
       type: String,
       required: true
     },
-    author: {
+    author: String,
+    url: {
       type: String,
       required: true
     },
-    url: String,
     likes: {
       type: Number,
       default: 0
