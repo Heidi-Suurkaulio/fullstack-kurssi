@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 content-Type: application/json
 
 {
-    "title": "Hirmuisten liskojen menneisyys",
-    "author": "Heikki Kämäräinen",
-    "url": "https://www.jyu.fi/fi/blogikirjoitus/hirmuisten-liskojen-menneisyys",
-    "likes": 9
+    "title": "Historiantutkija – artisti vai sessiomuusikko?",
+    "author": "Tuomas Laine-Frigren",
+    "url": "https://www.jyu.fi/fi/blogikirjoitus/historiantutkija-artisti-vai-sessiomuusikko",
+    "likes": 8
 }
