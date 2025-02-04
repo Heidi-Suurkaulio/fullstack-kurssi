@@ -1,4 +1,4 @@
-const { test, after, beforeEach, describe } = require('node:test')
+const { test, after, beforeEach, describe, before } = require('node:test')
 const mongo = require('mongoose')
 const Blog = require('../models/blog')
 const supertest = require('supertest')
@@ -23,7 +23,8 @@ const initBlogs = [
     }
 ]
 
-beforeEach(async () => {
+// before instead of beforeEach
+before(async () => {
     await Blog.deleteMany({})
     let blogObject = new Blog(initBlogs[0])
     await blogObject.save()
@@ -115,6 +116,7 @@ describe('testing post method', () => {
         const test = {
             title: 'Onko gradu kesken?',
             author: 'Heidi Suurkaulio',
+            url: null,
             likes: 6
         }
 
@@ -139,6 +141,45 @@ describe('testing delete method', () => {
     test('if id to be deleted not found returns status 404', async () => {
         await api
         .delete('/api/blogs/60a0ff0c000a0f0ebfc0c0c0')
+        .expect(404)
+    })
+})
+
+describe('testing put method', () => {
+    test('adding the likes of the last one by 1', async () => {
+        const resp = await api.get('/api/blogs')
+        const last = resp.body.pop()
+        const OriginalId = last.id
+        const originalLikes = last.likes
+
+        await api
+        .put(`/api/blogs/${OriginalId}`)
+        .send({likes: originalLikes + 1})
+        .expect(200)
+
+        response = await api.get('/api/blogs')
+        // if return by id is not implemented
+        const updated = response.body.find(({ id }) =>
+            id === OriginalId)
+
+        assert(updated.likes > originalLikes)
+    })
+
+    test('put to unknown endpoint returns 404', async () => {
+        await api
+        .put('/api/blogs/60a0ff0c000a0f0ebfc0c0c0')
+        .send({likes: 5})
+        .expect(404)
+    })
+
+    // still handles empty for some reason...
+    test('sending null value with put request return status 404', async () => {
+        const resp = await api.get('/api/blogs')
+        const last = resp.body.pop()
+
+        await api
+        .put(`/api/blogs/${last.id}`)
+        .send({likes: null})
         .expect(404)
     })
 })

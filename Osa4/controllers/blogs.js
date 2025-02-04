@@ -38,13 +38,29 @@ blogRouter.delete('/:id' , async (request, response) => {
         if (result) {
             response.status(204).end()
         }
-        else {
-            response.status(404).end()
-        }
+        response.status(404).end()
     }
     catch {except =>
         logger.info(except.message)
         response.status(500).end()
+    }
+})
+
+blogRouter.put('/:id', async (request, response) => {
+    try {
+        const body = request.body
+        const res = await Blog.findByIdAndUpdate(request.params.id, 
+            {likes: body.likes}, {
+                new: true, runValidators: true, context: 'query'
+            })
+         if (res) {
+            response.json(res).end()
+        }
+        response.status(404).end()
+    }
+    catch {except =>
+        logger.info(except.message)
+        response.status(404).end()
     }
 })
 
