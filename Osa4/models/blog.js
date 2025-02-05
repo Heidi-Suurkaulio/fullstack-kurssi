@@ -14,6 +14,10 @@ const blogSchema = mongo.Schema({
       type: Number,
       required: true,
       default: 0
+    },
+    user: {
+      type: mongo.Schema.Types.ObjectId,
+      ref: 'User'
     }
   })
 
