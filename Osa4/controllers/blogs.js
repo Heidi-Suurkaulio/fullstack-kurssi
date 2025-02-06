@@ -50,7 +50,7 @@ blogRouter.put('/:id', async (request, response, next) => {
             {likes: body.likes}, {
                 new: true, runValidators: true, context: 'query'
             })
-         if (res) {
+            if (res) {
             response.json(res).end()
         }
         response.status(404).end()
