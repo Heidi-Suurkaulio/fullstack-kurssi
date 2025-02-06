@@ -97,7 +97,7 @@ describe('testing post method', () => {
             title === 'Onko gradu kesken?')
 
         assert(blg.likes === 0)
-    })
+    }) 
 
     test('if request has no title return status 400', async () => {
         const tester = {
@@ -173,14 +173,14 @@ describe('testing put method', () => {
     })
 
     // still handles empty for some reason...
-    test('sending null value with put request return status 404', async () => {
+    test('sending null value with put request return status 400', async () => {
         const resp = await api.get('/api/blogs')
         const last = resp.body.pop()
 
         await api
         .put(`/api/blogs/${last.id}`)
         .send({likes: null})
-        .expect(404)
+        .expect(400)
     })
 })
 
