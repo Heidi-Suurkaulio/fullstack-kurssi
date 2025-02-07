@@ -1,6 +1,8 @@
 const { test, after, beforeEach, describe, before } = require('node:test')
 const mongo = require('mongoose')
 const Blog = require('../models/blog')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const assert = require('node:assert')
 const app = require('../app')
@@ -26,6 +28,13 @@ const initBlogs = [
 // before instead of beforeEach
 before(async () => {
     await Blog.deleteMany({})
+    await User.deleteMany({})
+    const pw = await bcrypt.hash('11235', 10)
+    await new User({
+        "name": "Fraktaali-Joonas",
+        "username": "fraktaali",
+        "passwordHash": pw
+    }).save()
     let blogObject = new Blog(initBlogs[0])
     await blogObject.save()
     blogObject = new Blog(initBlogs[1])
@@ -43,7 +52,6 @@ describe('generally testing the blog list', () => {
 
     test('there are right amount of blogs', async () => {
         const response = await api.get('/api/blogs')
-
         assert.strictEqual(response.body.length, initBlogs.length)
     })
 

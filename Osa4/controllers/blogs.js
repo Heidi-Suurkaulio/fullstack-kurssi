@@ -1,28 +1,37 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
+const User = require('../models/user')
+
+const notFound = new Error('resource not found')
+notFound.name = 'notFoundError'
 
 blogRouter.get('/', async (request, response, next) => {
     try {
-        const blogs = await Blog.find({})
+        const blogs = await Blog
+        .find({}).populate('user', {username: 1, name: 1})
         response.json(blogs)
     }
     catch(error) {
-         next(error)
+        next(error)
     }
 })
 
 blogRouter.post('/', async (request, response, next) => {
     try {
         const body = request.body
+        const user = await User.findOne({}) // return the 1st
+
         const blog = new Blog({
             title: body.title,
             author: body.author,
             url: body.url,
-            likes: body.likes
+            likes: body.likes,
+            user: user._id
         })
-        console.log("täällä")
 
         const saved = await blog.save()
+        user.blogs = user.blogs.concat(saved.id)
+        await user.save()
         response.status(201).json(saved)
     }
     catch(exception) {
@@ -36,7 +45,8 @@ blogRouter.delete('/:id' , async (request, response, next) => {
         if (result) {
             response.status(204).end()
         }
-        response.status(404).end()
+        next(notFound)
+        return
     }
     catch(exception) {
         next(exception)
@@ -53,7 +63,8 @@ blogRouter.put('/:id', async (request, response, next) => {
             if (res) {
             response.json(res).end()
         }
-        response.status(404).end()
+        next(notFound)
+        return
     }
     catch(exception) {
         next(exception)

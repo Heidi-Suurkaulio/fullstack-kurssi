@@ -16,6 +16,9 @@ const errorHandler = (error, request, response, next) => {
     if (error.name === 'passwordError') {
         return response.status(400).send({error: 'weak password'})
     }
+    if (error.name === 'notFoundError') {
+        return response.status(404).send({ error: 'resource not found'})
+    }
     if (error.name === 'MongoServerError' && error.message.includes('E11000 duplicate key error')) 
         {    
             return response.status(400).json({ error: 'expected `username` to be unique' })  

@@ -2,8 +2,8 @@ POST http://localhost:3001/api/blogs
 content-Type: application/json
 
 {
-    "title": "Rahoiksi gradulla?",
-    "author": "Santeri Aikio",
-    "url": "https://www.jyu.fi/fi/blogikirjoitus/rahoiksi-gradulla",
-    "likes": 6
+    "title":	"Historiantutkija – artisti vai sessiomuusikko?",
+    "author":	"Tuomas Laine-Frigren",
+    "url":	"https://www.jyu.fi/fi/blogikirjoitus/historiantutkija-artisti-vai-sessiomuusikko",
+    "likes":	8
 }
