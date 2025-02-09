@@ -7,6 +7,7 @@ const userRouter = require('./controllers/users')
 const middleWare = require('./utils/middleware')
 
 const mongo = require('mongoose')
+const loginRouter = require('./controllers/login')
 mongo.set('strictQuery', false)
 mongo.connect(mongoUrl)
 
@@ -16,6 +17,7 @@ app.use(express.json())
 
 app.use('/api/blogs', router)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 app.use(middleWare.unknownEndpoint)
 app.use(middleWare.errorHandler)

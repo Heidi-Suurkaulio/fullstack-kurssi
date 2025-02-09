@@ -19,6 +19,9 @@ const errorHandler = (error, request, response, next) => {
     if (error.name === 'notFoundError') {
         return response.status(404).send({ error: 'resource not found'})
     }
+    if (error.name === 'unauthorizedError') {
+        return response.status(401).send({error: 'invalid username or password'})
+    }
     if (error.name === 'MongoServerError' && error.message.includes('E11000 duplicate key error')) 
         {    
             return response.status(400).json({ error: 'expected `username` to be unique' })  
