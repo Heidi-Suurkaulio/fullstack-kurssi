@@ -1,9 +1,10 @@
 POST http://localhost:3001/api/blogs
 content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RlZWxncmF2ZSIsImlkIjoiNjdhNjA4NTBmM2QzZTZkNjExMjhkZTVjIiwiaWF0IjoxNzM5MTEwNjY5fQ.rTg9SZQZKkCrJ6msddpxguF12HQIvCwZMeRa1k1OTiU
 
 {
-    "title":	"Historiantutkija – artisti vai sessiomuusikko?",
-    "author":	"Tuomas Laine-Frigren",
-    "url":	"https://www.jyu.fi/fi/blogikirjoitus/historiantutkija-artisti-vai-sessiomuusikko",
-    "likes":	8
+    "title":	"Onko gradu kesken?",
+    "author":	"Heidi Suurkaulio",
+    "url":	"https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken",
+    "likes":	9
 }

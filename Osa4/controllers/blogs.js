@@ -1,6 +1,7 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 const notFound = new Error('resource not found')
 notFound.name = 'notFoundError'
@@ -8,18 +9,31 @@ notFound.name = 'notFoundError'
 blogRouter.get('/', async (request, response, next) => {
     try {
         const blogs = await Blog
-        .find({}).populate('user', {username: 1, name: 1})
+            .find({}).populate('user', { username: 1, name: 1 })
         response.json(blogs)
     }
-    catch(error) {
+    catch (error) {
         next(error)
     }
 })
 
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
+
 blogRouter.post('/', async (request, response, next) => {
     try {
         const body = request.body
-        const user = await User.findOne({}) // return the 1st
+        const decodedToken = jwt.verify(getTokenFrom(request), 
+        process.env.SECRET)
+        if (!decodedToken.id) {    
+            return response.status(401).json({ error: 'token invalid' })  
+        }
+        const user = await User.findById(decodedToken.id)
 
         const blog = new Blog({
             title: body.title,
@@ -34,12 +48,12 @@ blogRouter.post('/', async (request, response, next) => {
         await user.save()
         response.status(201).json(saved)
     }
-    catch(exception) {
+    catch (exception) {
         next(exception)
     }
 })
 
-blogRouter.delete('/:id' , async (request, response, next) => {
+blogRouter.delete('/:id', async (request, response, next) => {
     try {
         const result = await Blog.findByIdAndDelete(request.params.id)
         if (result) {
@@ -48,7 +62,7 @@ blogRouter.delete('/:id' , async (request, response, next) => {
         next(notFound)
         return
     }
-    catch(exception) {
+    catch (exception) {
         next(exception)
     }
 })
@@ -56,17 +70,17 @@ blogRouter.delete('/:id' , async (request, response, next) => {
 blogRouter.put('/:id', async (request, response, next) => {
     try {
         const body = request.body
-        const res = await Blog.findByIdAndUpdate(request.params.id, 
-            {likes: body.likes}, {
-                new: true, runValidators: true, context: 'query'
-            })
-            if (res) {
+        const res = await Blog.findByIdAndUpdate(request.params.id,
+            { likes: body.likes }, {
+            new: true, runValidators: true, context: 'query'
+        })
+        if (res) {
             response.json(res).end()
         }
         next(notFound)
         return
     }
-    catch(exception) {
+    catch (exception) {
         next(exception)
     }
 })
