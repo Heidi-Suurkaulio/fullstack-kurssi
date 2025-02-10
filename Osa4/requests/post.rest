@@ -1,6 +1,6 @@
 POST http://localhost:3001/api/blogs
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RlZWxncmF2ZSIsImlkIjoiNjdhNjA4NTBmM2QzZTZkNjExMjhkZTVjIiwiaWF0IjoxNzM5MTEwNjY5fQ.rTg9SZQZKkCrJ6msddpxguF12HQIvCwZMeRa1k1OTiU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RlZWxncmF2ZSIsImlkIjoiNjdhNjA4NTBmM2QzZTZkNjExMjhkZTVjIiwiaWF0IjoxNzM5MTkxNzM3fQ.7LCvdMqO2ObsZsA11d---xa9wSPJ-jt0KYbyITsI-lM
 
 {
     "title":	"Onko gradu kesken?",

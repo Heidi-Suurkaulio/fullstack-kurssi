@@ -15,6 +15,8 @@ app.use(cors())
 app.use(express.static('dist'))
 app.use(express.json())
 
+app.use(middleWare.tokenExtractor)
+
 app.use('/api/blogs', router)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
