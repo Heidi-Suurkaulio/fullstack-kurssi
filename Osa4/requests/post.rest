@@ -1,10 +1,10 @@
 POST http://localhost:3001/api/blogs
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RlZWxncmF2ZSIsImlkIjoiNjdhNjA4NTBmM2QzZTZkNjExMjhkZTVjIiwiaWF0IjoxNzM5MTkxNzM3fQ.7LCvdMqO2ObsZsA11d---xa9wSPJ-jt0KYbyITsI-lM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RvbmVncmF2ZSIsImlkIjoiNjdhYTRiZjAzYjhkOTMzM2UwMTkyZmQ5IiwiaWF0IjoxNzM5MjEzODQzfQ.zXAD6ubQih5wEAggXuHOee3NXrspR5wLKbEz1EjWYXo
 
 {
-    "title":	"Onko gradu kesken?",
-    "author":	"Heidi Suurkaulio",
-    "url":	"https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken",
-    "likes":	9
+    "title":	"Hirmuisten liskojen menneisyys",
+    "author":	"Heikki Kämäräinen",
+    "url":	"https://www.jyu.fi/fi/blogikirjoitus/hirmuisten-liskojen-menneisyys",
+    "likes":	17
 }

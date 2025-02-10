@@ -40,7 +40,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
-    unknownEndpoint,
     tokenExtractor,
+    unknownEndpoint,
     errorHandler
 }
