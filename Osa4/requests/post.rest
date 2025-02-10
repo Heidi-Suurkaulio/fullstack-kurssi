@@ -1,6 +1,5 @@
 POST http://localhost:3001/api/blogs
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1yc3RvbmVncmF2ZSIsImlkIjoiNjdhYTRiZjAzYjhkOTMzM2UwMTkyZmQ5IiwiaWF0IjoxNzM5MjEzODQzfQ.zXAD6ubQih5wEAggXuHOee3NXrspR5wLKbEz1EjWYXo
 
 {
     "title":	"Hirmuisten liskojen menneisyys",
