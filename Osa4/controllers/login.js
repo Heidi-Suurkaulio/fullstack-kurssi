@@ -16,9 +16,6 @@ loginRouter.post('/', async (request, response, next) => {
         err.name = 'unauthorizedError'
         next(err)
         return
-/*         return response.status(401).json({
-            error: 'invalid username or password'
-        }) */
     }
 
     const userForToken = {

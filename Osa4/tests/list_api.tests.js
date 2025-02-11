@@ -25,6 +25,13 @@ const initBlogs = [
     }
 ]
 
+const logIn = async () => {
+    const login = await api
+    .post('/api/login')
+    .send({username: "fraktaali", password: "11235"})
+    return `Bearer ${login.body.token}`
+}
+
 // before instead of beforeEach
 before(async () => {
     await Blog.deleteMany({})
@@ -35,10 +42,15 @@ before(async () => {
         "username": "fraktaali",
         "passwordHash": pw
     }).save()
-    let blogObject = new Blog(initBlogs[0])
-    await blogObject.save()
-    blogObject = new Blog(initBlogs[1])
-    await blogObject.save()
+    token = await logIn()
+    await api
+    .post('/api/blogs')
+    .send(initBlogs[0])
+    .set({ Authorization: token })
+    await api
+    .post('/api/blogs')
+    .send(initBlogs[1])
+    .set({ Authorization: token})
 })
 
 describe('generally testing the blog list', () => {
@@ -63,8 +75,9 @@ describe('generally testing the blog list', () => {
     })
 })
 
-describe('testing post method', () => {
-
+describe('testing post method', async () => {
+    token = await logIn()
+    
     test('a valid blog can be added', async () => {
         const testBlog = {
             title: 'Luottamusväli ≠ luottamusväli',
@@ -76,6 +89,7 @@ describe('testing post method', () => {
         await
             api.post('/api/blogs')
                 .send(testBlog)
+                .set({authorization: token})
                 .expect(201)
                 .expect('Content-Type', /application\/json/)
 
@@ -97,6 +111,7 @@ describe('testing post method', () => {
         await
             api.post('/api/blogs')
                 .send(testerBlog)
+                .set({authorization: token})
                 .expect(201)
 
         const response = await api.get('/api/blogs')
@@ -117,6 +132,7 @@ describe('testing post method', () => {
         await
             api.post('/api/blogs')
                 .send(tester)
+                .set({authorization: token})
                 .expect(400)
     })
 
@@ -131,17 +147,37 @@ describe('testing post method', () => {
         await
             api.post('/api/blogs')
                 .send(test)
+                .set({authorization: token})
                 .expect(400)
+    })
+
+    test ('if request has no authentication return 401', async () => {
+        const testerBlog = {
+            title: 'Onko gradu kesken?',
+            author: 'Heidi Suurkaulio',
+            url: 'https://www.jyu.fi/fi/blogikirjoitus/onko-gradu-kesken',
+            likes: 5
+        }
+
+        await 
+            api.post('/api/blogs')
+            .send(testerBlog)
+            .expect(401)
     })
 })
 
-describe('testing delete method', () => {
+describe('testing delete method', async () => {
+    token = await logIn()
+
     test('blog can be deleted by id', async () => {
         const resp = await api.get('/api/blogs')
         const originalLength = resp.body.length
         const lastId = resp.body.pop().id
         
-        await api.delete(`/api/blogs/${lastId}`)
+        await api
+        .delete(`/api/blogs/${lastId}`)
+        .set({authorization: token})
+
         const response = await api.get('/api/blogs')
         assert(originalLength > response.body.length)
     })
@@ -149,6 +185,7 @@ describe('testing delete method', () => {
     test('if id to be deleted not found returns status 404', async () => {
         await api
         .delete('/api/blogs/60a0ff0c000a0f0ebfc0c0c0')
+        .set({authorization: token})
         .expect(404)
     })
 })
