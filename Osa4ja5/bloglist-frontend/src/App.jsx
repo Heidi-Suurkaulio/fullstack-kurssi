@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import AddForm from './components/AddForm'
 import Blog from './components/Blog'
@@ -14,6 +15,9 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('https://')
+  // for notifications
+  const [notification, setNotification] = useState(null)
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -30,6 +34,13 @@ const App = () => {
     }
   }, [])
 
+  const doNotification = (state, msg) => {
+    setError(state)
+    setNotification(msg)
+    setTimeout(() => 
+      setNotification(null), 1000)
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -40,36 +51,48 @@ const App = () => {
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
       setUser(user)
+      doNotification(false, `${username} succesfully logged in`)
       setUsername('')
       setPassword('')
     } catch (except) {
-      alert('wrong credentials') //TODO fix
+      doNotification(true, 'Wrong username of password!')
     }
   }
 
   const handleLogOut = async (event) => {
     event.preventDefault()
-    setUser(null)
-    window.localStorage.clear()
+    try {
+      doNotification(false, `${user.name} logging out!`)
+      setUser(null)
+      window.localStorage.clear()
+    } catch (except) {
+      doNotification(true, except.message)
+    }
   }
 
   const addBlog = async (event) => {
     event.preventDefault()
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url
+    try {
+      const newBlog = {
+        title: title,
+        author: author,
+        url: url
+      }
+      
+      const respBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(respBlog))
+      doNotification(false, `${title} added`)
+      setTitle('')
+      setAuthor('')
+      setUrl('https://')
+    } catch (except) {
+      doNotification(true, 'Adding blog failed')
     }
-    
-    const respBlog = await blogService.create(newBlog)
-    setBlogs(blogs.concat(respBlog))
-    setTitle('')
-    setAuthor('')
-    setUrl('https://')
   }
 
   return (
     <div>
+      <Notification message={notification} error={error}/>
       {!user && 
       <LoginForm handleLogin={handleLogin} username={username} 
       setUsername={setUsername} password={password} 
