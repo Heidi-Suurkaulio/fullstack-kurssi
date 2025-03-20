@@ -1,6 +1,5 @@
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
-//const User = require('../models/user')
 const { userExtractor } = require('../utils/middleware')
 
 const notFound = new Error('resource not found')
