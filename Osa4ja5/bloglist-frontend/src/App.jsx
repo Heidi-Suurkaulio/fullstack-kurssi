@@ -80,6 +80,16 @@ const App = () => {
     }
   }
 
+  const increaseLikes = async (identifier, blogObject) => {
+    try {
+      const renewedBlog = await blogService.update(identifier, blogObject)
+      const newId = renewedBlog.id
+      setBlogs(blogs.map(bl => bl.id !== newId ? bl : renewedBlog))
+    } catch (except) {
+      console.log(except.message)
+    }
+  }
+
   return (
     <div>
       <Notification message={notification} error={error}/>
@@ -97,7 +107,8 @@ const App = () => {
         </Togglable>
         <h2>Blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} user={user} />
+          <Blog key={blog.id} blog={blog} user={user}
+          increaseLikes={increaseLikes} />
         )}
       </div>
       }

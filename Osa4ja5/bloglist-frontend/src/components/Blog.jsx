@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog, user, increaseLikes }) => {
   const [showAll, setShowAll] = useState(false)
 
   const hideDetails = {
@@ -18,6 +18,11 @@ const Blog = ({ blog, user }) => {
 
   const toggleShowAll = () => {
     setShowAll(!showAll)
+  }
+
+  const like = (event) => {
+    event.preventDefault()
+    increaseLikes(blog.id, {likes: blog.likes += 1})
   }
 
   return <div>
@@ -40,7 +45,7 @@ const Blog = ({ blog, user }) => {
         </li>
         <li>            
           likes: {blog.likes} 
-          <button> Like </button>
+          <button onClick={like}> Like </button>
         </li>
         <li>
           {user.name}

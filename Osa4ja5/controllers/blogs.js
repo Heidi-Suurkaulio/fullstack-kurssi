@@ -69,6 +69,7 @@ blogRouter.put('/:id', async (request, response, next) => {
         })
         if (res) {
             response.json(res).end()
+            return
         }
         next(notFound)
         return
