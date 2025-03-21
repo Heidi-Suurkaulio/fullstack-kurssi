@@ -90,6 +90,17 @@ const App = () => {
     }
   }
 
+  const removeBlog = async blog => {
+    try {
+      await blogService.remove(blog.id)
+      const removed = blogs.findIndex(b => b.id === blog.id)
+      setBlogs(blogs.toSpliced(removed, 1))
+      doNotification(false, `Removed ${blog.title}`)
+     } catch (except) {
+      doNotification(true, 'Removing blog failed')
+    } 
+  }
+
   const sort = () => {
     return  blogs.sort((a,b) => b.likes - a.likes)
   }
@@ -111,8 +122,8 @@ const App = () => {
         </Togglable>
         <h2>Blogs</h2>
         {sort().map(blog =>
-      <Blog key={blog.id} blog={blog}
-      increaseLikes={increaseLikes} />
+      <Blog key={blog.id} blog={blog} userId={user.id} increaseLikes={increaseLikes} 
+      removeBlog={removeBlog}/>
     )}
       </div>
       }
