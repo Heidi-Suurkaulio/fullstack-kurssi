@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState } from 'react'
 
-const Blog = ({ blog, user, increaseLikes }) => {
+const Blog = ({ blog, increaseLikes }) => {
   const [showAll, setShowAll] = useState(false)
 
   const hideDetails = {
@@ -48,7 +48,7 @@ const Blog = ({ blog, user, increaseLikes }) => {
           <button onClick={like}> Like </button>
         </li>
         <li>
-          {user.name}
+          {blog.user.name}
         </li>
       </ul>
       <button onClick={toggleShowAll}>
