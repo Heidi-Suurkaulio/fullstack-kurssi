@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
   const [showAll, setShowAll] = useState(false)
@@ -26,7 +27,7 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
 
   const like = (event) => {
     event.preventDefault()
-    increaseLikes(blog.id, {likes: blog.likes += 1})
+    increaseLikes(blog.id, { likes: blog.likes += 1 })
   }
 
   const deleteBlog = (event) => {
@@ -39,7 +40,7 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
   return <div>
     <div style={hideDetails}>
       <strong>{blog.title}</strong> {blog.author}
-      <button onClick={toggleShowAll} style={{float: 'right'}}>
+      <button onClick={toggleShowAll} style={{ float: 'right' }}>
         Show Details
       </button>
     </div>
@@ -54,8 +55,8 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
         <li>
           <a href={blog.url}>{blog.url}</a>
         </li>
-        <li>            
-          likes: {blog.likes} 
+        <li>
+          likes: {blog.likes}
           <button onClick={like}> Like </button>
         </li>
         <li>
@@ -70,6 +71,13 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
       </button>
     </div>
   </div>
+}
+
+Blog.propTypes = {
+  blog: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
+  increaseLikes: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired
 }
 
 export default Blog

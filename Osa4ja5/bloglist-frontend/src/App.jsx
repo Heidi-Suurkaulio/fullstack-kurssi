@@ -15,7 +15,7 @@ const App = () => {
   // for notifications
   const [notification, setNotification] = useState(null)
   const [error, setError] = useState(false)
-  
+
   const addFormRef = useRef()
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const App = () => {
   const doNotification = (state, msg) => {
     setError(state)
     setNotification(msg)
-    setTimeout(() => 
+    setTimeout(() =>
       setNotification(null), 1000)
   }
 
@@ -96,9 +96,9 @@ const App = () => {
       const removed = blogs.findIndex(b => b.id === blog.id)
       setBlogs(blogs.toSpliced(removed, 1))
       doNotification(false, `Removed ${blog.title}`)
-     } catch (except) {
+    } catch (except) {
       doNotification(true, 'Removing blog failed')
-    } 
+    }
   }
 
   const sort = () => {
@@ -108,23 +108,23 @@ const App = () => {
   return (
     <div>
       <Notification message={notification} error={error}/>
-      {!user && 
-      <LoginForm handleLogin={handleLogin} username={username} 
-      setUsername={setUsername} password={password} 
-      setPassword={setPassword}/>
+      {!user &&
+      <LoginForm handleLogin={handleLogin} username={username}
+        setUsername={setUsername} password={password}
+        setPassword={setPassword}/>
       }
       {user && <div>
         <p>{user.name} logged in
           <button onClick={handleLogOut}>Log Out</button>
         </p>
         <Togglable buttonLabel='Add New Blog' ref={addFormRef}>
-        <AddForm createBlog={addBlog}/>
+          <AddForm createBlog={addBlog}/>
         </Togglable>
         <h2>Blogs</h2>
         {sort().map(blog =>
-      <Blog key={blog.id} blog={blog} userId={user.id} increaseLikes={increaseLikes} 
-      removeBlog={removeBlog}/>
-    )}
+          <Blog key={blog.id} blog={blog} userId={user.id} increaseLikes={increaseLikes}
+            removeBlog={removeBlog}/>
+        )}
       </div>
       }
     </div>

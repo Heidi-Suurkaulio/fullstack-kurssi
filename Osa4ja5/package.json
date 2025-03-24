@@ -28,7 +28,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.5"
+    "mongoose": "^8.9.5",
+    "prop-types": "^15.8.1"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",
