@@ -18,26 +18,26 @@ const AddForm = ({ createBlog }) => {
 
     setTitle('')
     setAuthor('')
-    setUrl('https://')
+    setUrl('')
     setLikes(0)
   }
 
   return <form onSubmit={addBlog}>
     <h2>Add New Blog</h2>
     <div>
-            Title: <input value={title}
+            Title: <input value={title} data-testid={'title'}
         onChange={({ target }) => setTitle(target.value)} />
     </div>
     <div>
-            Author: <input value={author}
+            Author: <input value={author} data-testid={'author'}
         onChange={({ target }) => setAuthor(target.value)} />
     </div>
     <div>
-            Url: <input value={url}
+            Url: <input type="url" value={url} placeholder="https://"
         onChange={({ target }) => setUrl(target.value)} />
     </div>
     <div>
-            Likes: <input type="number" value={likes}
+            Likes: <input type="number" data-testid={'likes'} value={likes}
         onChange={({ target }) => setLikes(target.value)} />
     </div>
     <div>
