@@ -3,9 +3,7 @@ import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 describe('Component <Blog />', () => {
-  const testFn = () => {
-    return 0
-  }
+  const mockFn = vi.fn()
 
   const user = {
     id: '12345',
@@ -23,7 +21,7 @@ describe('Component <Blog />', () => {
   let container
   beforeEach(() => {
     container = render(<Blog blog={blg} userId='12345'
-      increaseLikes={testFn} removeBlog={testFn}/>).container
+      increaseLikes={mockFn} removeBlog={mockFn}/>).container
   })
 
   test('renders two titles', () => {
@@ -39,5 +37,12 @@ describe('Component <Blog />', () => {
     const div = container.querySelector('.details')
     expect(div).toHaveStyle('display: contents')
     expect(div).toHaveTextContent('www.example.com','likes', 'Test User')
+  })
+
+  test('if like button is clicked twice, mock function is called twice', async () => {
+    const user = userEvent.setup()
+    const button = screen.getByText('Like')
+    await user.dblClick(button)
+    expect(mockFn.mock.calls).toHaveLength(2)
   })
 })
