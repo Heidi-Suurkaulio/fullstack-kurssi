@@ -8,17 +8,17 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
     border: '0.1em solid black',
     padding: '0.25em',
     margin: '0.25em',
-    display: showAll ? 'none' : ''
+    display: showAll ? 'none' : 'contents'
   }
   const showDetails = {
     border: '0.1em solid black',
     padding: '0.25em',
     margin: '0.25em',
-    display: showAll ? '' : 'none'
+    display: showAll ? 'contents' : 'none'
   }
   const removeButtonStyle = {
     float: 'right',
-    display: blog.user.id === userId ? '' : 'none'
+    display: blog.user.id === userId ? 'contents' : 'none'
   }
 
   const toggleShowAll = () => {
@@ -44,7 +44,7 @@ const Blog = ({ blog, userId, increaseLikes, removeBlog }) => {
         Show Details
       </button>
     </div>
-    <div style={showDetails}>
+    <div style={showDetails} className='details'>
       <ul style={{ listStyleType: 'none' }}>
         <li>
           <strong>{blog.title}</strong>
