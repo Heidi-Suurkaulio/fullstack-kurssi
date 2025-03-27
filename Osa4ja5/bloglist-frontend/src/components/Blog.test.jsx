@@ -35,7 +35,7 @@ describe('Component <Blog />', () => {
     await user.click(button)
 
     const div = container.querySelector('.details')
-    expect(div).toHaveStyle('display: contents')
+    expect(div).toHaveStyle('display: block')
     expect(div).toHaveTextContent('www.example.com','likes', 'Test User')
   })
 
