@@ -1,11 +1,12 @@
 const mongo = require('mongoose')
 
+// NOTE username: {unique: true,} removed for testing!!!
 const userSchema = mongo.Schema({
     name: String, 
     username: {
         type: String,
         required: true,
-        unique: true,
+        //unique: true,
         minLength: 3
     },
     passwordHash: String,
