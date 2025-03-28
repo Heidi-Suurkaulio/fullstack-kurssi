@@ -39,6 +39,7 @@ describe('Blog app', () => {
     describe('When logged in', () => {
         beforeEach(async ({ page }) => {
             await login(page, 'mluukkai', 'salainen')
+
         })
       
         test('a new blog can be created', async ({ page }) => {
@@ -48,11 +49,24 @@ describe('Blog app', () => {
 
         test('created blog can be liked', async ({ page }) => {
             await addBlog(page, 'TestBlog', 'Test Author')
-            await page.getByRole('button', {name: 'Show Details'}).first().click()
+            await page.getByRole('button', {name: 'Show Details'}).click()
             const likeItem = await page.getByRole('listitem').filter({ hasText: 'likes' })
             await expect(likeItem).toContainText('0')
             await likeItem.getByRole('button', {name:'like'}).click()
             await expect(likeItem).toContainText('1')
+        })
+
+        test('created blog can be removed', async ({ page }) => {
+            await addBlog(page, 'TestBlog', 'Test Author')
+            await page.getByRole('button', {name: 'Show Details'}).click()
+            
+            const deleteButton = await page.getByRole('button', {name: 'Delete'})
+            await expect(deleteButton).toBeVisible()
+
+            page.on('dialog', async dialog => await dialog.accept())
+            await deleteButton.click()
+            const notification = await page.locator('.notification')
+            expect(notification).toContainText('Removed TestBlog')
         })
       })
 })
