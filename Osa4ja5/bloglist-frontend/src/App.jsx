@@ -19,18 +19,18 @@ const App = () => {
   const addFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
-  }, [])
-
-  useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
       blogService.setToken(user.token)
     }
+  }, [])
+
+  useEffect(() => {
+    blogService.getAll().then(blogs =>
+      setBlogs(blogs)
+    )
   }, [])
 
   const doNotification = (state, msg) => {
@@ -49,12 +49,13 @@ const App = () => {
       })
 
       window.localStorage.setItem('loggedUser', JSON.stringify(user))
+      blogService.setToken(user.token)
       setUser(user)
       doNotification(false, `${username} succesfully logged in`)
       setUsername('')
       setPassword('')
     } catch (except) {
-      doNotification(true, 'Wrong username of password!')
+      doNotification(true, 'Wrong username or password!')
     }
   }
 
