@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require('@playwright/test')
-const {login} = require('./functions')
+const { login, addBlog } = require('./functions')
 
 describe('Blog app', () => {
     beforeEach(async ({ page, request }) => {
@@ -42,14 +42,17 @@ describe('Blog app', () => {
         })
       
         test('a new blog can be created', async ({ page }) => {
-            await page.getByRole('button', { name: 'Add New Blog' }).click()
-
-            await page.getByTestId('title').fill('TestBlog')
-            await page.getByTestId('author').fill('Test Author')
-            await page.getByPlaceholder('https://').fill('https://www.example.com')
-            await page.getByTestId('likes').fill('2')
-            await page.getByRole('button', {name: 'Add' }).click()
+            await addBlog(page, 'TestBlog', 'Test Author')
             await expect(page.getByText('TestBlog Test Author')).toBeVisible()
+        })
+
+        test('created blog can be liked', async ({ page }) => {
+            await addBlog(page, 'TestBlog', 'Test Author')
+            await page.getByRole('button', {name: 'Show Details'}).first().click()
+            const likeItem = await page.getByRole('listitem').filter({ hasText: 'likes' })
+            await expect(likeItem).toContainText('0')
+            await likeItem.getByRole('button', {name:'like'}).click()
+            await expect(likeItem).toContainText('1')
         })
       })
 })
