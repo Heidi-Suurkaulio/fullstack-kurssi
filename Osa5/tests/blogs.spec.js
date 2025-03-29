@@ -11,14 +11,21 @@ describe('Blog app', () => {
                 password: 'salainen'
             }
         })
+        await request.post('/api/users', {
+            data: {
+                name: 'Maija Luukkainen',
+                username: 'maija',
+                password: 'salasana'
+            }
+        })
 
         await page.goto('/')
     })
 
     test('Login form is shown', async ({ page }) => {
-        const locator = await page.getByText('Log in to application')
+        const locator = page.getByText('Log in to application')
         await expect(locator).toBeVisible()
-        const fields = await page.getByRole('textbox')
+        const fields = page.getByRole('textbox')
         await expect(fields).toHaveCount(2)
     })
 
@@ -30,7 +37,7 @@ describe('Blog app', () => {
     
         test('fails with wrong credentials', async ({ page }) => {
             await login(page, 'mluukka', 'väärä')
-            const errorDiv = await page.locator('.error')
+            const errorDiv = page.locator('.error')
             await expect(errorDiv).toContainText('Wrong username or password!')
             await expect(page.getByText('Matti Luukkainen logged in')).not.toBeVisible()
         })
@@ -38,8 +45,11 @@ describe('Blog app', () => {
     
     describe('When logged in', () => {
         beforeEach(async ({ page }) => {
+            await login(page, 'maija', 'salasana')
+            await addBlog(page, 'Maijas Blog', 'Maija Luukkainen', '3')
+            await addBlog(page, 'Second Blog', 'Maija Luukkainen', '2')
+            await page.getByRole('button', {name: 'Log Out'}).click()
             await login(page, 'mluukkai', 'salainen')
-
         })
       
         test('a new blog can be created', async ({ page }) => {
@@ -49,8 +59,9 @@ describe('Blog app', () => {
 
         test('created blog can be liked', async ({ page }) => {
             await addBlog(page, 'TestBlog', 'Test Author')
-            await page.getByRole('button', {name: 'Show Details'}).click()
-            const likeItem = await page.getByRole('listitem').filter({ hasText: 'likes' })
+            await expect(page.getByText('TestBlog Test Author')).toBeVisible()
+            await page.getByRole('button', {name: 'Show Details'}).last().click()
+            const likeItem = page.getByRole('listitem').filter({ hasText: 'likes' })
             await expect(likeItem).toContainText('0')
             await likeItem.getByRole('button', {name:'like'}).click()
             await expect(likeItem).toContainText('1')
@@ -58,15 +69,22 @@ describe('Blog app', () => {
 
         test('created blog can be removed', async ({ page }) => {
             await addBlog(page, 'TestBlog', 'Test Author')
-            await page.getByRole('button', {name: 'Show Details'}).click()
+            await expect(page.getByText('TestBlog Test Author')).toBeVisible()
+            await page.getByRole('button', {name: 'Show Details'}).last().click()
             
-            const deleteButton = await page.getByRole('button', {name: 'Delete'})
-            await expect(deleteButton).toBeVisible()
+            await expect(page.getByRole('button', {name: 'Delete'})).toBeVisible()
+            const deleteButton = page.getByRole('button', {name: 'Delete'})
 
             page.on('dialog', async dialog => await dialog.accept())
             await deleteButton.click()
-            const notification = await page.locator('.notification')
-            expect(notification).toContainText('Removed TestBlog')
+            const notification = page.locator('.notification')
+            await expect(notification).toContainText('Removed TestBlog')
+        })
+
+        test('delete button is visible only for the user who created the blog', async ({page}) => {
+            await page.getByRole('button', {name: 'Show Details'}).first().click()
+            expect(page.getByRole('listitem').last()).toContainText('Maija Luukkainen')
+            await expect(page.getByRole('button', {name: 'Delete'})).not.toBeVisible()
         })
       })
 })
