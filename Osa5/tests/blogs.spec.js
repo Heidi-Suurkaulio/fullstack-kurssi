@@ -86,5 +86,15 @@ describe('Blog app', () => {
             expect(page.getByRole('listitem').last()).toContainText('Maija Luukkainen')
             await expect(page.getByRole('button', {name: 'Delete'})).not.toBeVisible()
         })
+        
+        test('blogs are sorted on decending order according to likes', async ({ page }) => {
+            await page.getByRole('button', {name: 'Show Details'}).first().click()
+            await page.getByRole('button', {name: 'Show Details'}).last().click()
+            await expect(page.getByRole('list').first()).toContainText('likes: 3')
+            await expect(page.getByRole('list').last()).toContainText('likes: 2')
+            await page.getByRole('button', {name: 'like'}).last().dblclick()
+            await expect(page.getByRole('list').first()).toContainText('likes: 4')
+            await expect(page.getByRole('list').last()).toContainText('likes: 3')
+        })
       })
 })
